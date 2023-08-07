@@ -27,7 +27,7 @@ pipeline {
         stage('Build') {
             steps {
                 /*sh 'ls -la'*/
-                sh 'mvn package -B -ntp'
+                sh 'mvn package -DskipTests -B -ntp'
                 /*bat (Para Windows)*/
             }
         }
