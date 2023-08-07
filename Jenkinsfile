@@ -23,6 +23,19 @@ pipeline {
                 sh 'mvn test -B -ntp'
                 /*bat (Para Windows)*/
             }
+            post {
+                always {
+                  echo 'Mostrando resultado del proceso de test:'
+                }
+                success {
+                  echo 'success'
+                  jacoco()
+                  junit 'target/surefire-reports/*.xml'
+                }
+                failure {
+                  echjo 'failure'
+                }
+            }
         }
         stage('Build') {
             steps {
