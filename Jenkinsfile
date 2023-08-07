@@ -10,10 +10,24 @@ pipeline {
         //         url: 'https://ideatechperu@bitbucket.org/ideatech_developer/petclinic-rest.git'
         //     }
         // }
-        stage('Build Artefact') {
+        stage('Compile') {
             steps {
                 /*sh 'ls -la'*/
-                sh 'mvn clean package -DskipTests -B -ntp'
+                sh 'mvn clean compile -B -ntp'
+                /*bat (Para Windows)*/
+            }
+        }
+        stage('Test') {
+            steps {
+                /*sh 'ls -la'*/
+                sh 'mvn test -B -ntp'
+                /*bat (Para Windows)*/
+            }
+        }
+        stage('Build') {
+            steps {
+                /*sh 'ls -la'*/
+                sh 'mvn package -B -ntp'
                 /*bat (Para Windows)*/
             }
         }
