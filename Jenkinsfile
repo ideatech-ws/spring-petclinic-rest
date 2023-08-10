@@ -3,6 +3,12 @@ pipeline {
     tools {
         maven 'maven-3.8.5'
     }
+    options { 
+        /*skipDefaultCheckout */
+        timeout(time: 30, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '1'))
+    
+    }
     stages {
         // stage('Checkout') {
         //     steps {
@@ -19,30 +25,53 @@ pipeline {
         }
         stage('Test') {
             steps {
-                /*sh 'ls -la'*/
                 sh 'mvn test -B -ntp'
-                /*bat (Para Windows)*/
             }
             post {
                 always {
-                  echo 'Mostrando resultado del proceso de test:'
+                   echo 'Mostrando resultado del proceso de test:'
                 }
                 success {
-                  echo 'success'
-                  jacoco()
-                  junit 'target/surefire-reports/*.xml'
+                   echo 'success'
+                   junit 'target/surefire-reports/*.xml'
+                   jacoco()
                 }
                 failure {
-                  echjo 'failure'
+                   echo 'failure'
                 }
             }
         }
         stage('Build') {
             steps {
-                /*sh 'ls -la'*/
                 sh 'mvn package -DskipTests -B -ntp'
-                /*bat (Para Windows)*/
             }
         }
+        stage('Sonarqube') {
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn sonar:sonar -B -ntp'
+                }
+            }
+        }
+        /*
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        */
+    }
+    post {
+        success {
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            deleteDir()
+        }
+        /*
+        always {
+            deleteDir()
+        }
+        */
     }
 }
