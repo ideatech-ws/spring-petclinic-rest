@@ -60,6 +60,22 @@ pipeline {
                 }
             }
         }
+        stage('Artifactory') {
+            steps {
+                script {
+                    def release = 'spring-petclinic-rest-release'
+                    def snapshot = 'spring-petclinic-rest-snapshot'
+
+                    def server = Artifactory.server 'artifactory'
+                    def rtMaven = Artifactory.newMavenBuild()
+
+                    rtMaven.deployer server: server, releaseRepo: release, snapshotRepo: snapshot
+
+                    def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install -B -ntp -DskipTests'
+                    server.publishBuildInfo buildInfo
+                }
+            }
+        }
     }
     post {
         success {
