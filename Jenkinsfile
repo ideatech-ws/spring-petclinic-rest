@@ -124,6 +124,35 @@ pipeline {
                 }
             }
         }
+        stage('Nexus') {
+            steps {
+                script {
+                    def pom = readMavenPom file: 'pom.xml'
+                    println pom
+
+                    nexusPublisher nexusInstanceId: 'nexus', 
+                    nexusRepositoryId: 'spring-petclinic-rest-release', 
+                    packages: [
+                        [
+                            $class: 'MavenPackage', 
+                            mavenAssetList: [
+                                [
+                                    classifier: '', 
+                                    extension: '', 
+                                    filePath: "target/${pom.artifactId}-${pom.version}.jar"
+                                ]
+                            ], 
+                            mavenCoordinate: [
+                                groupId: "${pom.groupId}" ,
+                                artifactId: "${pom.artifactId}", 
+                                packaging: "${pom.artifactId}", 
+                                version: "${pom.packaging}"
+                            ]
+                        ]
+                    ]
+                }
+            }
+        }
     }
     post {
         success {
