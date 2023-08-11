@@ -156,8 +156,8 @@ pipeline {
                             mavenCoordinate: [
                                 groupId: "${pom.groupId}" ,
                                 artifactId: "${pom.artifactId}", 
-                                packaging: "${pom.artifactId}", 
-                                version: "${pom.packaging}"
+                                packaging: "${pom.packaging}", 
+                                version: "${pom.version}"
                             ]
                         ]
                     ]
