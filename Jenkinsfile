@@ -81,6 +81,21 @@ pipeline {
                     */
 
                     //Forma 2:
+                    def pom = readMavenPom file: 'pom.xml'
+
+                    def uploadSpec = """ 
+                        {
+                            "files": [
+                                {
+                                    "pattern": "target/.*.jar",
+                                    "target": "${pom.groupId}/${pom.artifactId}/${pom.version}",
+                                    "regexp": "true"
+                                    
+                                }
+                            ]
+                        }
+                    """
+                    /*
                     def uploadSpec = """ 
                         {
                             "files": [
@@ -93,7 +108,9 @@ pipeline {
                             ]
                         }
                     """
+                    */
                     server.upload spec: uploadSpec
+
                     /* Interpolación de String en Groovy
                     sh 'echo hello world'
                     sh 'echo hello world'
