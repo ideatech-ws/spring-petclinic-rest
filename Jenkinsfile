@@ -86,13 +86,14 @@ pipeline {
                             "files": [
                                 {
                                     "pattern": "target/.*.jar",
-                                    "target": "${snapshot}/${BUILD_NUMBER}/",
+                                    "target": "${release}/${BUILD_NUMBER}/",
                                     "regexp": "true"
                                     
                                 }
                             ]
                         }
                     """
+                    server.upload spec: uploadSpec
                     /* Interpolación de String en Groovy
                     sh 'echo hello world'
                     sh 'echo hello world'
