@@ -60,6 +60,7 @@ pipeline {
                 }
             }
         }
+        /*
         stage('Artifactory') {
             steps {
                 script {
@@ -81,6 +82,7 @@ pipeline {
                     */
 
                     //Forma 2:
+                    /* Descomentar
                     def pom = readMavenPom file: 'pom.xml'
                     println pom
                     def uploadSpec = """ 
@@ -95,6 +97,7 @@ pipeline {
                             ]
                         }
                     """
+                    */
                     /*
                     def uploadSpec = """ 
                         {
@@ -109,8 +112,9 @@ pipeline {
                         }
                     """
                     */
+                    /* Descomentar
                     server.upload spec: uploadSpec
-
+                    */
                     /* Interpolación de String en Groovy
                     sh 'echo hello world'
                     sh 'echo hello world'
@@ -121,9 +125,11 @@ pipeline {
                         echo mitocode
                     '''
                     */
+        /* Descomentar
                 }
             }
         }
+        */
         stage('Nexus') {
             steps {
                 script {
@@ -139,7 +145,7 @@ pipeline {
                                 [
                                     classifier: '', 
                                     extension: '', 
-                                    filePath: "target/${pom.artifactId}-${pom.version}.jar"
+                                    filePath: "target/${pom.artifactId}-${pom.version}.${pom.packaging}"
                                 ]
                             ], 
                             mavenCoordinate: [
