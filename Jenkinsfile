@@ -9,6 +9,11 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '1'))
     
     }
+    /*
+    environment {
+        JAVA_HOME = 'usr/bin'
+    }
+    */
     stages {
         // stage('Checkout') {
         //     steps {
