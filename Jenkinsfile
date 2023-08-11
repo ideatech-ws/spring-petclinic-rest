@@ -64,6 +64,8 @@ pipeline {
             steps {
                 script {
 
+                    sh 'printenv'
+
                     // Forma 1:
                     def release = 'spring-petclinic-rest-release'
                     def snapshot = 'spring-petclinic-rest-snapshot'
@@ -101,8 +103,6 @@ pipeline {
                         echo mitocode
                     '''
                     */
-
-
                 }
             }
         }
