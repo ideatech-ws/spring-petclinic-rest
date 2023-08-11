@@ -82,13 +82,13 @@ pipeline {
 
                     //Forma 2:
                     def pom = readMavenPom file: 'pom.xml'
-
+                    println pom
                     def uploadSpec = """ 
                         {
                             "files": [
                                 {
                                     "pattern": "target/.*.jar",
-                                    "target": "${pom.groupId}/${pom.artifactId}/${pom.version}/",
+                                    "target": "${release}/${pom.groupId}/${pom.artifactId}/${pom.version}/",
                                     "regexp": "true"
                                     
                                 }
