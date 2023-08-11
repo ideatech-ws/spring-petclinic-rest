@@ -63,16 +63,46 @@ pipeline {
         stage('Artifactory') {
             steps {
                 script {
+
+                    // Forma 1:
                     def release = 'spring-petclinic-rest-release'
                     def snapshot = 'spring-petclinic-rest-snapshot'
-
+                   
                     def server = Artifactory.server 'artifactory'
+                    /*
                     def rtMaven = Artifactory.newMavenBuild()
 
                     rtMaven.deployer server: server, releaseRepo: release, snapshotRepo: snapshot
 
                     def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install -B -ntp -DskipTests'
                     server.publishBuildInfo buildInfo
+                    */
+
+                    //Forma 2:
+                    def uploadSpec = """ 
+                        {
+                            "files": [
+                                {
+                                    "pattern": "target/.*.jar",
+                                    "target": "${snapshot}/${BUILD_NUMBER}/",
+                                    "regexp": "true"
+                                    
+                                }
+                            ]
+                        }
+                    """
+                    /* Interpolación de String en Groovy
+                    sh 'echo hello world'
+                    sh 'echo hello world'
+                    sh 'echo hello world'
+                    =
+                    sh '''
+                        echo dany
+                        echo mitocode
+                    '''
+                    */
+
+
                 }
             }
         }
